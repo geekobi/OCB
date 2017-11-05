@@ -117,13 +117,13 @@ def xmlrpc_handle_exception_int(e):
 
 def xmlrpc_handle_exception_string(e):
     if isinstance(e, openerp.osv.orm.except_orm):
-        fault = xmlrpclib.Fault('warning -- ' + e.name + '\n\n' + e.value, '')
+        fault = xmlrpclib.Fault(RPC_FAULT_CODE_APPLICATION_ERROR, u'%s\n\n%s' % (e.name, e.value))
         response = xmlrpclib.dumps(fault, allow_none=False, encoding=None)
     elif isinstance(e, openerp.exceptions.Warning):
-        fault = xmlrpclib.Fault('warning -- Warning\n\n' + str(e), '')
+        fault = xmlrpclib.Fault(RPC_FAULT_CODE_WARNING, u'Warning\n\n%s' % str(e))
         response = xmlrpclib.dumps(fault, allow_none=False, encoding=None)
     elif isinstance(e, openerp.exceptions.AccessError):
-        fault = xmlrpclib.Fault('warning -- AccessError\n\n' + str(e), '')
+        fault = xmlrpclib.Fault(RPC_FAULT_CODE_APPLICATION_ERROR, u'AccessError\n\n%s' % str(e))
         response = xmlrpclib.dumps(fault, allow_none=False, encoding=None)
     elif isinstance(e, openerp.exceptions.AccessDenied):
         fault = xmlrpclib.Fault('AccessDenied', str(e))
